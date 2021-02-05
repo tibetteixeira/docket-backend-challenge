@@ -11,4 +11,5 @@ public interface CartorioRepository extends JpaRepository<Cartorio, String>{
 	Cartorio findByNome(String nome);
 	
 	Boolean existsByNome(String nome);
+	Boolean existsByCnpj(String cnpj);
 }

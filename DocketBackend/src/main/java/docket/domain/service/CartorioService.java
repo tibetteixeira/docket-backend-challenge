@@ -28,7 +28,7 @@ public class CartorioService {
 	}
 
 	public Cartorio salvarCartorio(Cartorio cartorio) {
-		if (findExists(cartorio.getNome()))
+		if (findExists(cartorio))
 			throw new CartorioExistenteException("Cartório já existente");
 		
 		return cartorioRepository.save(cartorio);
@@ -36,17 +36,18 @@ public class CartorioService {
 
 	public Cartorio atualizarCartorio(String nome, Cartorio cartorio) {
 		Cartorio cartorioSalvo = findOrFail(nome);
+		String cnpj = cartorioSalvo.getCnpj();
+		
 		cartorioSalvo = new Cartorio(cartorio);
 		String novoNome = cartorioSalvo.getNome();
+		String novoCnpj = cartorioSalvo.getCnpj();
 
-		if (!nome.equals(novoNome)) {
-			if (findExists(novoNome)) {
+		if (!nome.equals(novoNome) || !cnpj.equals(novoCnpj)) {
+			if (findExists(cartorioSalvo)) {
 				throw new CartorioExistenteException("Cartório já existente");
-			} else {
-				this.removerCartorio(nome);
 			}
 		}
-
+		this.removerCartorio(nome);
 		return cartorioRepository.save(cartorioSalvo);
 	}
 
@@ -64,7 +65,7 @@ public class CartorioService {
 		return cartorioEncontrado;
 	}
 
-	private Boolean findExists(String nome) {
-		return cartorioRepository.existsByNome(nome);
+	private Boolean findExists(Cartorio cartorio) {
+		return cartorioRepository.existsByNome(cartorio.getNome()) || cartorioRepository.existsByCnpj(cartorio.getCnpj());
 	}
 }
