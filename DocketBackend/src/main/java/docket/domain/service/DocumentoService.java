@@ -55,24 +55,11 @@ public class DocumentoService {
 		return documentosEncontrados;
 	}
 
-	private Documento findOrFail(String nome, String tipo) {
-		List<Documento> documentosEncontrados = documentoRepository.findByNome(nome);
-
-		if (documentosEncontrados.size() == 0)
-			throw new DocumentoNaoEncontradoException("Documento não localizado");
-
-		for (Documento documentoEncontrado : documentoRepository.findByNome(nome)) {
-			if (documentoEncontrado.getTipoDocumento().equals(tipo)) {
-				return documentoEncontrado;
-			}
-		}
-		throw new DocumentoNaoEncontradoException("Documento não localizado");
-	}
-
 	private Boolean findExists(Documento documento) {
 		if (documentoRepository.existsByNome(documento.getNome())) {
 			for (Documento documentoEncontrado : documentoRepository.findByNome(documento.getNome())) {
-				if (documento.getTipoDocumento().equals(documentoEncontrado.getTipoDocumento())) {
+				if (documento.getTipoDocumento().getDescricao()
+						.equals(documentoEncontrado.getTipoDocumento().getDescricao())) {
 					return true;
 				}
 			}

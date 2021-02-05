@@ -24,11 +24,12 @@ public class Documento {
 	@Column(nullable = false)
 	private String dataEmissao;
 
-	@Column(nullable = false)
-	private String tipoDocumento;
+	@ManyToOne
+	@JoinColumn(name = "tipo_documento", nullable = false)
+	private TipoDocumento tipoDocumento;
 
 	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "cnpj")
+	@JoinColumn(name = "cnpj_cartorio", nullable = false)
 	private Cartorio cartorio;
 
 	public Documento() {
@@ -42,8 +43,7 @@ public class Documento {
 		this.tipoDocumento = documento.tipoDocumento;
 	}
 
-	public Documento(String nome, String dataEmissao, String tipoDocumento, Cartorio cartorio) {
-		super();
+	public Documento(String nome, String dataEmissao, TipoDocumento tipoDocumento, Cartorio cartorio) {
 		this.nome = nome;
 		this.dataEmissao = dataEmissao;
 		this.tipoDocumento = tipoDocumento;
@@ -74,11 +74,11 @@ public class Documento {
 		this.dataEmissao = dataEmissao;
 	}
 
-	public String getTipoDocumento() {
+	public TipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(String tipoDocumento) {
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
 
