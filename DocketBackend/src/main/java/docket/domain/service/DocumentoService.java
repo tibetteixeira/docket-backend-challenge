@@ -22,49 +22,51 @@ public class DocumentoService {
 	public List<Documento> listar() {
 		return documentoRepository.findAll();
 	}
-	
-	public Documento obterDocumento(String nome) {
+
+	public List<Documento> obterDocumento(String nome) {
 		return findOrFail(nome);
 	}
 
 	public Documento salvarDocumento(Documento documento) {
-		if (findExists(documento.getNome()))
+		if (findExists(documento))
 			throw new DocumentoExistenteException("Documento já existente");
-		
+
 		return documentoRepository.save(documento);
 	}
 
-	public Documento atualizarDocumento(String nome, Documento documento) {
-		Documento documentoSalvo = findOrFail(nome);
-		documentoSalvo = new Documento(documento);
-		String novoNome = documentoSalvo.getNome();
+	private List<Documento> findOrFail(String nome) {
+		List<Documento> documentosEncontrados = documentoRepository.findByNome(nome);
 
-		if (!nome.equals(novoNome)) {
-			if (findExists(novoNome)) {
-				throw new DocumentoExistenteException("Documento já existente");
-			} else {
-				this.removerDocumento(nome);
-			}
-		}
-
-		return documentoRepository.save(documentoSalvo);
-	}
-
-	public void removerDocumento(String nome) {
-		Documento documento = findOrFail(nome);
-		documentoRepository.delete(documento);
-	}
-
-	private Documento findOrFail(String nome) {
-		Documento documentoEncontrado = documentoRepository.findByNome(nome);
-
-		if (documentoEncontrado == null)
+		if (documentosEncontrados.size() == 0)
 			throw new DocumentoNaoEncontradoException("Documento não localizado");
 
-		return documentoEncontrado;
+		return documentosEncontrados;
 	}
 
-	private Boolean findExists(String nome) {
-		return documentoRepository.existsByNome(nome);
+	private Documento findOrFail(String nome, String tipo) {
+		List<Documento> documentosEncontrados = documentoRepository.findByNome(nome);
+
+		if (documentosEncontrados.size() == 0)
+			throw new DocumentoNaoEncontradoException("Documento não localizado");
+
+		for (Documento documentoEncontrado : documentoRepository.findByNome(nome)) {
+			if (documentoEncontrado.getTipoDocumento().equals(tipo)) {
+				return documentoEncontrado;
+			}
+		}
+		throw new DocumentoNaoEncontradoException("Documento não localizado");
+	}
+
+	private Boolean findExists(Documento documento) {
+		if (documentoRepository.existsByNome(documento.getNome())) {
+			for (Documento documentoEncontrado : documentoRepository.findByNome(documento.getNome())) {
+				if (documento.getTipoDocumento().equals(documentoEncontrado.getTipoDocumento())) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+		return false;
 	}
 }

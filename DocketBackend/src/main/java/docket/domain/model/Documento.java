@@ -2,6 +2,7 @@ package docket.domain.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ public class Documento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
 
-	@Column(nullable = false, length = 50, unique = true)
+	@Column(nullable = false, length = 50)
 	private String nome;
 
 	@Column(nullable = false)
@@ -26,7 +27,7 @@ public class Documento {
 	@Column(nullable = false)
 	private String tipoDocumento;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "cnpj")
 	private Cartorio cartorio;
 

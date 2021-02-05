@@ -36,8 +36,8 @@ public class DocumentoController {
 	}
 
 	@GetMapping("/{nome}")
-	public ResponseEntity<Documento> buscar(@PathVariable String nome) {
-		return ResponseEntity.ok(documentoService.obterDocumento(nome));
+	public List<Documento> buscar(@PathVariable String nome) {
+		return documentoService.obterDocumento(nome);
 	}
 
 	@PostMapping
@@ -45,16 +45,5 @@ public class DocumentoController {
 		Documento documentoSalvo = documentoService.salvarDocumento(documento);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(documentoSalvo);
-	}
-
-	@PutMapping("/{nome}")
-	public ResponseEntity<Documento> atualizar(@PathVariable String nome, @RequestBody Documento documento) {
-		return ResponseEntity.ok(documentoService.atualizarDocumento(nome, documento));
-	}
-
-	@DeleteMapping("/{nome}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable String nome) {
-		documentoService.removerDocumento(nome);
 	}
 }
