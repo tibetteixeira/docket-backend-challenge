@@ -1,5 +1,6 @@
 package docket.domain.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,17 @@ public class DocumentoService {
 
 	public List<Documento> listar() {
 		return documentoRepository.findAll();
+	}
+
+	public List<Documento> listar(String cnpj) {
+		List<Documento> documentos = new ArrayList<>();
+		for (Documento documento : documentoRepository.findAll()) {
+			if (documento.getCartorio().getCnpj().equals(cnpj)) {
+				documentos.add(documento);
+			}
+		}
+
+		return documentos;
 	}
 
 	public List<Documento> obterDocumento(String nome) {

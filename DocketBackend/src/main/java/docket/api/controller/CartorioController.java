@@ -17,17 +17,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import docket.domain.model.Cartorio;
+import docket.domain.model.Documento;
 import docket.domain.service.CartorioService;
+import docket.domain.service.DocumentoService;
 
 @RestController
 @RequestMapping(path = "/api/cartorio", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CartorioController {
 
 	private CartorioService cartorioService;
+	private DocumentoService documentoService;
 
 	@Autowired
-	public CartorioController(CartorioService cartorioService) {
+	public CartorioController(CartorioService cartorioService, DocumentoService documentoService) {
 		this.cartorioService = cartorioService;
+		this.documentoService = documentoService;
 	}
 
 	@GetMapping
@@ -38,6 +42,11 @@ public class CartorioController {
 	@GetMapping("/{nome}")
 	public ResponseEntity<Cartorio> buscar(@PathVariable String nome) {
 		return ResponseEntity.ok(cartorioService.obterCartorio(nome));
+	}
+
+	@GetMapping("/{nome}/documento")
+	public List<Documento> buscarDocumentos(@PathVariable String nome) {
+		return documentoService.listar(cartorioService.obterCartorio(nome).getCnpj());
 	}
 
 	@PostMapping
