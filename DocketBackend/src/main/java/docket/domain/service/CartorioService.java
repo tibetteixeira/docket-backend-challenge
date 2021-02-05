@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import docket.domain.repository.CartorioRepository;
-import docket.domain.model.Administrador;
 import docket.domain.model.Cartorio;
-import docket.domain.exception.AdministradorExistenteException;
 import docket.domain.exception.CartorioExistenteException;
 import docket.domain.exception.CartorioNaoEncontradoException;
 

@@ -36,7 +36,7 @@ public class CartorioController {
 	}
 
 	@GetMapping("/{nome}")
-	public ResponseEntity<Cartorio> buscar(@PathVariable(name = "nome") String nome) {
+	public ResponseEntity<Cartorio> buscar(@PathVariable String nome) {
 		return ResponseEntity.ok(cartorioService.obterCartorio(nome));
 	}
 
@@ -48,7 +48,7 @@ public class CartorioController {
 	}
 
 	@PutMapping("/{nome}")
-	public ResponseEntity<Cartorio> atualizar(@PathVariable(name = "nome") String nome, @RequestBody Cartorio cartorio) {
+	public ResponseEntity<Cartorio> atualizar(@PathVariable String nome, @RequestBody Cartorio cartorio) {
 		return ResponseEntity.ok(cartorioService.atualizarCartorio(nome, cartorio));
 	}
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import docket.domain.repository.DocumentoRepository;
 import docket.domain.model.Documento;
+import docket.domain.exception.DocumentoExistenteException;
 import docket.domain.exception.DocumentoNaoEncontradoException;
 
 @Service
@@ -21,25 +22,37 @@ public class DocumentoService {
 	public List<Documento> listar() {
 		return documentoRepository.findAll();
 	}
-
-	public Documento obterDocumento(Integer id) {
-		return null;
-	}
 	
 	public Documento obterDocumento(String nome) {
-		return null;
+		return findOrFail(nome);
 	}
 
 	public Documento salvarDocumento(Documento documento) {
+		if (findExists(documento.getNome()))
+			throw new DocumentoExistenteException("Documento já existente");
+		
 		return documentoRepository.save(documento);
 	}
 
-	public Documento atualizarDocumento(Integer id, Documento documento) {
-		return null;
+	public Documento atualizarDocumento(String nome, Documento documento) {
+		Documento documentoSalvo = findOrFail(nome);
+		documentoSalvo = new Documento(documento);
+		String novoNome = documentoSalvo.getNome();
+
+		if (!nome.equals(novoNome)) {
+			if (findExists(novoNome)) {
+				throw new DocumentoExistenteException("Documento já existente");
+			} else {
+				this.removerDocumento(nome);
+			}
+		}
+
+		return documentoRepository.save(documentoSalvo);
 	}
 
-	public void removerDocumento(Integer id) {
-		
+	public void removerDocumento(String nome) {
+		Documento documento = findOrFail(nome);
+		documentoRepository.delete(documento);
 	}
 
 	private Documento findOrFail(String nome) {

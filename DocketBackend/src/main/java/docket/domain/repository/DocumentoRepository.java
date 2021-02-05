@@ -10,7 +10,6 @@ import docket.domain.model.Documento;
 
 @Repository
 public interface DocumentoRepository extends JpaRepository<Documento, String>{
-	Documento findById(Integer id);
 	Documento findByNome(String nome);
 	
 //	@Query("SELECT * FROM categoria where descricao like :tipo")

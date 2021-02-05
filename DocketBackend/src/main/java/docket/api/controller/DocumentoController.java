@@ -35,9 +35,9 @@ public class DocumentoController {
 		return documentoService.listar();
 	}
 
-	@GetMapping("/{documento}")
-	public ResponseEntity<Documento> buscar(@PathVariable(name = "documento") Integer codigo) {
-		return ResponseEntity.ok(documentoService.obterDocumento(codigo));
+	@GetMapping("/{nome}")
+	public ResponseEntity<Documento> buscar(@PathVariable String nome) {
+		return ResponseEntity.ok(documentoService.obterDocumento(nome));
 	}
 
 	@PostMapping
@@ -47,14 +47,14 @@ public class DocumentoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(documentoSalvo);
 	}
 
-	@PutMapping("/{documento}")
-	public ResponseEntity<Documento> atualizar(@PathVariable(name = "codigo") Integer codigo, @RequestBody Documento documento) {
-		return ResponseEntity.ok(documentoService.atualizarDocumento(codigo, documento));
+	@PutMapping("/{nome}")
+	public ResponseEntity<Documento> atualizar(@PathVariable String nome, @RequestBody Documento documento) {
+		return ResponseEntity.ok(documentoService.atualizarDocumento(nome, documento));
 	}
 
-	@DeleteMapping("/{documento}")
+	@DeleteMapping("/{nome}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Integer codigo) {
-		documentoService.removerDocumento(codigo);
+	public void delete(@PathVariable String nome) {
+		documentoService.removerDocumento(nome);
 	}
 }

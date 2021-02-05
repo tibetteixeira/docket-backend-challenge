@@ -42,11 +42,9 @@ public class AdministradorService {
 		if (!usuario.equals(novoUsuario)) {
 			if (findExists(novoUsuario)) {
 				throw new AdministradorExistenteException("Usuário já existente");
-			} else {
-				this.removerAdministrador(usuario);
 			}
 		}
-
+		this.removerAdministrador(usuario);
 		return administradorRepository.save(administradorSalvo);
 	}
 

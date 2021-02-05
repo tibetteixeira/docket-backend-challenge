@@ -12,29 +12,80 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "documento")
 public class Documento {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(name = "nome", nullable = false, length = 50, unique = true)
+	private Integer codigo;
+
+	@Column(nullable = false, length = 50, unique = true)
 	private String nome;
-	
-	@Column(name = "data_emissao", nullable = false)
+
+	@Column(nullable = false)
 	private String dataEmissao;
-	
-	@Column(name = "tipo_documento", nullable = false)
-	private Integer tipo;
-	
+
+	@Column(nullable = false)
+	private String tipoDocumento;
+
 	@ManyToOne
 	@JoinColumn(name = "cnpj")
 	private Cartorio cartorio;
 
-	public Documento(String nome, String dataEmissao, Cartorio cartorio, Integer tipo) {
+	public Documento() {
+	}
+
+	public Documento(Documento documento) {
+		this.codigo = documento.codigo;
+		this.nome = documento.nome;
+		this.dataEmissao = documento.dataEmissao;
+		this.cartorio = documento.cartorio;
+		this.tipoDocumento = documento.tipoDocumento;
+	}
+
+	public Documento(String nome, String dataEmissao, String tipoDocumento, Cartorio cartorio) {
+		super();
 		this.nome = nome;
 		this.dataEmissao = dataEmissao;
+		this.tipoDocumento = tipoDocumento;
 		this.cartorio = cartorio;
-		this.tipo = tipo;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(String dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public Cartorio getCartorio() {
+		return cartorio;
+	}
+
+	public void setCartorio(Cartorio cartorio) {
+		this.cartorio = cartorio;
 	}
 }
-

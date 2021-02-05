@@ -36,7 +36,7 @@ public class AdministradorController {
 	}
 
 	@GetMapping("/{usuario}")
-	public ResponseEntity<Administrador> buscar(@PathVariable(value = "usuario") String usuario) {
+	public ResponseEntity<Administrador> buscar(@PathVariable String usuario) {
 		return ResponseEntity.ok(administradorService.obterAdministrador(usuario));
 	}
 
@@ -48,7 +48,7 @@ public class AdministradorController {
 	}
 
 	@PutMapping("/{usuario}")
-	public ResponseEntity<Administrador> atualizar(@PathVariable(value = "usuario") String usuario, @RequestBody Administrador administrador) {
+	public ResponseEntity<Administrador> atualizar(@PathVariable String usuario, @RequestBody Administrador administrador) {
 		return ResponseEntity.ok(administradorService.atualizarAdministrador(usuario, administrador));
 	}
 

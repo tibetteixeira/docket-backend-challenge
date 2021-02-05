@@ -3,44 +3,51 @@ package docket.domain.model;
 import java.util.List;
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "cartorio")
 public class Cartorio {
 
 	@Id
-	@Column(name = "cpnj", nullable = false, length = 20, unique = true)
+	@Column(nullable = false, length = 20, unique = true)
 	private String cnpj;
 
-	@Column(name = "nome", nullable = false, length = 50, unique = true)
+	@Column(nullable = false, length = 50, unique = true)
 	private String nome;
 
-	@Column(name = "rua", nullable = false, length = 50)
+	@Column(nullable = false, length = 50)
 	private String rua;
 
-	@Column(name = "cep", nullable = false, length = 10)
+	@Column(nullable = false, length = 10)
 	private String cep;
 
-	@Column(name = "numero", nullable = false, length = 10)
+	@Column(nullable = false, length = 10)
 	private String numero;
 
-	@Column(name = "cidade", nullable = false, length = 50)
+	@Column(nullable = false, length = 50)
 	private String cidade;
 
-	@Column(name = "estado", nullable = false, length = 25)
+	@Column(nullable = false, length = 25)
 	private String estado;
+
+//	@JsonIgnoreProperties("cartorio")
+//	@OneToMany(targetEntity = Documento.class, mappedBy = "cartorio", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Documento> documentos = new ArrayList<>();
 
 //	@Column(name = "rua", nullable = false, length = 20)
 //	private List<TipoDocumentoEnum> documentosEmitidos;
 
 	public Cartorio() {
-		
 	}
-	
+
 	public Cartorio(String cnpj, String nome, String rua, String cep, String numero, String cidade, String estado) {
 		this.cnpj = cnpj;
 		this.nome = nome;
