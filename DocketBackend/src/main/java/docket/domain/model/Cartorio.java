@@ -1,16 +1,14 @@
 package docket.domain.model;
 
 import java.util.List;
-import java.util.ArrayList;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "cartorio")
@@ -38,17 +36,17 @@ public class Cartorio {
 	@Column(nullable = false, length = 25)
 	private String estado;
 
-//	@JsonIgnoreProperties("cartorio")
-//	@OneToMany(targetEntity = Documento.class, mappedBy = "cartorio", cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<Documento> documentos = new ArrayList<>();
-
-//	@Column(name = "rua", nullable = false, length = 20)
-//	private List<TipoDocumentoEnum> documentosEmitidos;
+	@ManyToMany
+	@JoinTable(name = "documentos_emitidos", 
+				joinColumns = @JoinColumn(name = "cartorio_cnpj"), 
+				inverseJoinColumns = @JoinColumn(name = "tipo_documento_id"))
+	private List<TipoDocumento> documentosEmitidos;
 
 	public Cartorio() {
 	}
 
-	public Cartorio(String cnpj, String nome, String rua, String cep, String numero, String cidade, String estado) {
+	public Cartorio(String cnpj, String nome, String rua, String cep, String numero, String cidade, String estado,
+			List<TipoDocumento> documentosEmitidos) {
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.rua = rua;
@@ -56,6 +54,7 @@ public class Cartorio {
 		this.numero = numero;
 		this.cidade = cidade;
 		this.estado = estado;
+		this.documentosEmitidos = documentosEmitidos;
 	}
 
 	public Cartorio(Cartorio cartorio) {
@@ -66,6 +65,7 @@ public class Cartorio {
 		this.numero = cartorio.numero;
 		this.cidade = cartorio.cidade;
 		this.estado = cartorio.estado;
+		this.documentosEmitidos = cartorio.documentosEmitidos;
 	}
 
 	public String getCnpj() {
@@ -124,4 +124,11 @@ public class Cartorio {
 		this.estado = estado;
 	}
 
+	public List<TipoDocumento> getDocumentosEmitidos() {
+		return documentosEmitidos;
+	}
+
+	public void setDocumentosEmitidos(List<TipoDocumento> documentosEmitidos) {
+		this.documentosEmitidos = documentosEmitidos;
+	}
 }

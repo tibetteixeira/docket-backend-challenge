@@ -1,5 +1,6 @@
 package docket.domain.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import docket.domain.repository.CartorioRepository;
 import docket.domain.model.Cartorio;
+import docket.domain.model.TipoDocumento;
 import docket.domain.exception.CartorioExistenteException;
 import docket.domain.exception.CartorioNaoEncontradoException;
 
@@ -23,6 +25,17 @@ public class CartorioService {
 		return cartorioRepository.findAll();
 	}
 
+	public List<TipoDocumento> listarTipoDocumento(String nome) {
+		Cartorio cartorio = findOrFail(nome);
+		List<TipoDocumento> tipoDocumentoList = new ArrayList<>();
+
+		for (TipoDocumento tipoDocumento : cartorio.getDocumentosEmitidos()) {
+			tipoDocumentoList.add(tipoDocumento);
+		}
+
+		return tipoDocumentoList;
+	}
+
 	public Cartorio obterCartorio(String nome) {
 		return findOrFail(nome);
 	}
@@ -30,14 +43,14 @@ public class CartorioService {
 	public Cartorio salvarCartorio(Cartorio cartorio) {
 		if (findExists(cartorio))
 			throw new CartorioExistenteException("Cartório já existente");
-		
+
 		return cartorioRepository.save(cartorio);
 	}
 
 	public Cartorio atualizarCartorio(String nome, Cartorio cartorio) {
 		Cartorio cartorioSalvo = findOrFail(nome);
 		String cnpj = cartorioSalvo.getCnpj();
-		
+
 		cartorioSalvo = new Cartorio(cartorio);
 		String novoNome = cartorioSalvo.getNome();
 		String novoCnpj = cartorioSalvo.getCnpj();
@@ -66,6 +79,7 @@ public class CartorioService {
 	}
 
 	private Boolean findExists(Cartorio cartorio) {
-		return cartorioRepository.existsByNome(cartorio.getNome()) || cartorioRepository.existsByCnpj(cartorio.getCnpj());
+		return cartorioRepository.existsByNome(cartorio.getNome())
+				|| cartorioRepository.existsByCnpj(cartorio.getCnpj());
 	}
 }

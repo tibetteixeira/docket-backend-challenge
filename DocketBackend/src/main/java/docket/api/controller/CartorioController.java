@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import docket.domain.model.Cartorio;
 import docket.domain.model.Documento;
+import docket.domain.model.TipoDocumento;
 import docket.domain.service.CartorioService;
 import docket.domain.service.DocumentoService;
 
@@ -47,6 +48,11 @@ public class CartorioController {
 	@GetMapping("/{nome}/documento")
 	public List<Documento> buscarDocumentos(@PathVariable String nome) {
 		return documentoService.listar(cartorioService.obterCartorio(nome).getCnpj());
+	}
+
+	@GetMapping("/{nome}/tipo_documento")
+	public List<TipoDocumento> buscarTipoDocumento(@PathVariable String nome) {
+		return cartorioService.listarTipoDocumento(nome);
 	}
 
 	@PostMapping
